@@ -27,6 +27,7 @@ var Debug = false
 // set, instructs Process to sort the import paths with the given prefixes
 // into another group after 3rd-party packages.
 var LocalPrefix string
+var PrivatePrefix string
 
 // Process formats and adjusts imports for the provided file.
 // If opt is nil the defaults are used.
@@ -43,7 +44,8 @@ func Process(filename string, src []byte, opt *Options) ([]byte, error) {
 			GOPATH:      build.Default.GOPATH,
 			GOROOT:      build.Default.GOROOT,
 			Debug:       Debug,
-			LocalPrefix: LocalPrefix,
+			LocalPrefix:   LocalPrefix,
+			PrivatePrefix: PrivatePrefix,
 		},
 		AllErrors:  opt.AllErrors,
 		Comments:   opt.Comments,
