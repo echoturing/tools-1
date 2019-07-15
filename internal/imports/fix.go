@@ -40,6 +40,17 @@ var importToGroup = []func(env *ProcessEnv, importPath string) (num int, ok bool
 		}
 		for _, p := range strings.Split(env.LocalPrefix, ",") {
 			if strings.HasPrefix(importPath, p) || strings.TrimSuffix(p, "/") == importPath {
+				return 4, true
+			}
+		}
+		return
+	},
+	func(env *ProcessEnv, importPath string) (num int, ok bool) {
+		if env.LocalPrefix == "" {
+			return
+		}
+		for _, p := range strings.Split(env.PrivatePrefix, ",") {
+			if strings.HasPrefix(importPath, p) || strings.TrimSuffix(p, "/") == importPath {
 				return 3, true
 			}
 		}
@@ -502,6 +513,9 @@ func fixImportsDefault(fset *token.FileSet, f *ast.File, filename string, env *P
 // the go command, the go/build package, etc.
 type ProcessEnv struct {
 	LocalPrefix string
+
+	PrivatePrefix string
+
 	Debug       bool
 
 	// If non-empty, these will be used instead of the
